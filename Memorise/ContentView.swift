@@ -8,25 +8,69 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["🫡","🥹","😤","🥲","🤣","😶‍🌫️","😊","🤯" ]
+    
+    @State var emojis = ["🀢","🀣","🀤","🀥"]
+    
+    @State var theme = "Mahjong"
     
     @State var cardCount: Int = 4
     
     var body: some View {
         VStack{
+            title
             ScrollView {
                 cards
             }
             Spacer()
             cardCountAdjusters
+            HStack{
+                themeMahjong
+                themeColour
+                themeFruit
+            }
         }
         .padding()
+    }
+    
+    var title: some View {
+        Text("Memorise!")
+            .font(.largeTitle).bold().foregroundColor(.orange)
+    }
+    
+    var themeMahjong : some View {
+        Button(action:{
+            emojis = ["🀢","🀣","🀤","🀥"]
+            theme = "Mahjong"
+            print("change emojis to Mahjong")
+        }, label: {
+            Text("Mahjong")
+        })
+    }
+    
+    var themeColour : some View {
+        Button(action:{
+            emojis = ["🔴","🟡","🟢","🔵","🟣"]
+            theme = "Colour"
+            print("change emojis to Colour")
+        }, label: {
+            Text("Colour")
+        })
+    }
+    
+    var themeFruit : some View {
+        Button(action:{
+            emojis = ["🍎","🍐","🍊","🍋","🍌","🍉"]
+            theme = "Fruits"
+            print("change emojis to Fruits")
+        }, label: {
+            Text("Fruits")
+        })
     }
     
     var cards: some View { //this is a normal function
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) { //this is a view builder
             ForEach(0..<cardCount, id: \.self) { index in
-                CardView(content: emojis[index])
+                CardView(content:emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
@@ -66,6 +110,8 @@ struct CardView: View {
     //a struct (var) must have a value
     @State var isFaceUp = true //have a default value, but value can change
     //@State stores a temporary state of the Var (by creating a pointer)
+    
+    @State var theme = "Mahjong"
     
     var body: some View {
         ZStack { //trailing closure syntax - dont need a () because last/only argument is a function.
