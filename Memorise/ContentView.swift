@@ -8,34 +8,34 @@
 import SwiftUI
 
 struct ContentView: View {
+    let emojis = ["🫡","🥹","😤","🥲"]
+    
     var body: some View {
         HStack{
-            //the default value can be changed
-            CardView(isFaceUp: true)
-            CardView()
-            CardView()
-            CardView()
+            ForEach(emojis.indices, id: \.self) { index in 
+                CardView(content: emojis[index])
+            }
         }
         .foregroundColor(.orange) //default is to fill the background with orange too
         .padding()
     }
 }
 
-struct CardView: View{
-    
+struct CardView: View {
+    let content: String
     //a struct (var) must have a value
-    @State var isFaceUp = false //have a default value, but value can change
+    @State var isFaceUp = true //have a default value, but value can change
     //@State stores a temporary state of the Var (by creating a pointer)
     
-    var body:some View{
+    var body: some View {
         ZStack { //trailing closure syntax - dont need a () because last/only argument is a function.
             let base = RoundedRectangle(cornerRadius: 12) //a View cannot be changed, so use let instead of var. Type Inference.
             if isFaceUp{
                 base.foregroundColor(.white) //overwrite the ground Colour on line 19
                 base.strokeBorder(lineWidth: 2)
-                Text("🫡").font(.largeTitle)
-            } else{
-                base // take orange colour from line 19
+                Text(content).font(.largeTitle)
+            } else {
+                base.fill() // take orange colour from line 19
             }
 
         }
