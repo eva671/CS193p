@@ -24,20 +24,25 @@ struct ContentView: View {
 struct CardView: View{
     
     //a struct (var) must have a value
-    var isFaceUp: Bool = false
+    @State var isFaceUp = false //have a default value, but value can change
+    //@State stores a temporary state of the Var (by creating a pointer)
+    
     var body:some View{
-        ZStack(content: {
+        ZStack { //trailing closure syntax - dont need a () because last/only argument is a function.
+            let base = RoundedRectangle(cornerRadius: 12) //a View cannot be changed, so use let instead of var. Type Inference.
             if isFaceUp{
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(.white) //overwrite the ground Colour on line 19
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2)
+                base.foregroundColor(.white) //overwrite the ground Colour on line 19
+                base.strokeBorder(lineWidth: 2)
                 Text("🫡").font(.largeTitle)
             } else{
-                RoundedRectangle(cornerRadius: 12) // take orange colour from line 19
+                base // take orange colour from line 19
             }
 
-        })
+        }
+        .onTapGesture {
+            print("tapped") //a good debug feature to create something
+            isFaceUp.toggle() //ifFaceUp is a Struct so it can have functions on it
+        }
     }
 }
 
