@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var emojis = ["🀢","🀣","🀤","🀥"]
+    @State var emojis: Array<String> = []
     
-    @State var theme = "Mahjong"
+    @State var theme: String = ""
     
-    @State var cardCount: Int = 4
+//@State var cardCount: Int = 4
     
     var body: some View {
         VStack{
@@ -22,7 +22,6 @@ struct ContentView: View {
                 cards
             }
             Spacer()
-            cardCountAdjusters
             HStack{
                 themeMahjong
                 themeColour
@@ -39,7 +38,7 @@ struct ContentView: View {
     
     func themeChoosing(content: [String], name: String) -> some View{
         Button(action: {
-            emojis = content
+            emojis = content.shuffled()
             theme = name
         }, label: {
             Text(name)
@@ -47,20 +46,20 @@ struct ContentView: View {
     }
     
     var themeMahjong: some View{
-        themeChoosing(content: ["🀢","🀣","🀤","🀥"], name: "Mahjong")
+        themeChoosing(content: ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥"], name: "Mahjong")
     }
     
     var themeColour: some View{
-        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣"], name: "Colour")
+        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣"], name: "Colour")
     }
     
     var themeFruit: some View{
-        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉"], name: "Fruits")
+        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉"], name: "Fruits")
     }
     
     var cards: some View { //this is a normal function
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) { //this is a view builder
-            ForEach(0..<cardCount, id: \.self) { index in
+            ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content:emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
@@ -68,32 +67,42 @@ struct ContentView: View {
         .foregroundColor(.orange) //default is to fill the background with orange too
     }
     
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
-    }
+//    var cards: some View { //this is a normal function
+//        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) { //this is a view builder
+//            ForEach(0..<cardCount, id: \.self) { index in
+//                CardView(content:emojis[index])
+//                    .aspectRatio(2/3, contentMode: .fit)
+//            }
+//        }
+//        .foregroundColor(.orange) //default is to fill the background with orange too
+//    }
     
-    func cardCountAdjuster(by offset: Int, symbol: String) -> some View{ //by is what the caller uses; offset is the user-defined name, internal vs external parameter names. Symbol is both internal and external
-        Button(action: {
-                cardCount += offset
-        }, label: {
-            Image(systemName: symbol)
-        })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
-    }
+//    var cardCountAdjusters: some View {
+//        HStack {
+//            cardRemover
+//            Spacer()
+//            cardAdder
+//        }
+//        .imageScale(.large)
+//        .font(.largeTitle)
+//    }
+//
+//    func cardCountAdjuster(by offset: Int, symbol: String) -> some View{ //by is what the caller uses; offset is the user-defined name, internal vs external parameter names. Symbol is both internal and external
+//        Button(action: {
+//                cardCount += offset
+//        }, label: {
+//            Image(systemName: symbol)
+//        })
+//        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+//    }
+//
+//    var cardRemover: some View {
+//        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
+//    }
+//
+//    var cardAdder: some View {
+//        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
+//    }
 }
 
 struct CardView: View {
@@ -101,8 +110,6 @@ struct CardView: View {
     //a struct (var) must have a value
     @State var isFaceUp = true //have a default value, but value can change
     //@State stores a temporary state of the Var (by creating a pointer)
-    
-    @State var theme = "Mahjong"
     
     var body: some View {
         ZStack { //trailing closure syntax - dont need a () because last/only argument is a function.
