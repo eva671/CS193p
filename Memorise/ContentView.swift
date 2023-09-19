@@ -37,34 +37,25 @@ struct ContentView: View {
             .font(.largeTitle).bold().foregroundColor(.orange)
     }
     
-    var themeMahjong : some View {
-        Button(action:{
-            emojis = ["🀢","🀣","🀤","🀥"]
-            theme = "Mahjong"
-            print("change emojis to Mahjong")
+    func themeChoosing(content: [String], name: String) -> some View{
+        Button(action: {
+            emojis = content
+            theme = name
         }, label: {
-            Text("Mahjong")
+            Text(name)
         })
     }
     
-    var themeColour : some View {
-        Button(action:{
-            emojis = ["🔴","🟡","🟢","🔵","🟣"]
-            theme = "Colour"
-            print("change emojis to Colour")
-        }, label: {
-            Text("Colour")
-        })
+    var themeMahjong: some View{
+        themeChoosing(content: ["🀢","🀣","🀤","🀥"], name: "Mahjong")
     }
     
-    var themeFruit : some View {
-        Button(action:{
-            emojis = ["🍎","🍐","🍊","🍋","🍌","🍉"]
-            theme = "Fruits"
-            print("change emojis to Fruits")
-        }, label: {
-            Text("Fruits")
-        })
+    var themeColour: some View{
+        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣"], name: "Colour")
+    }
+    
+    var themeFruit: some View{
+        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉"], name: "Fruits")
     }
     
     var cards: some View { //this is a normal function
