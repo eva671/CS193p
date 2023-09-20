@@ -22,11 +22,7 @@ struct ContentView: View {
                 cards
             }
             Spacer()
-            HStack{
-                themeMahjong
-                themeColour
-                themeFruit
-            }
+            themeChoosingGroup
         }
         .padding()
     }
@@ -36,29 +32,42 @@ struct ContentView: View {
             .font(.largeTitle).bold().foregroundColor(.orange)
     }
     
-    func themeChoosing(content: [String], name: String) -> some View{
+    var themeChoosingGroup: some View{
+        HStack{
+            themeMahjong
+            Spacer()
+            themeColour
+            Spacer()
+            themeFruit
+        }
+    }
+    
+    func themeChoosing(content: [String], name: String, symbol: String) -> some View{
         Button(action: {
             emojis = content.shuffled()
             theme = name
         }, label: {
-            Text(name)
+            VStack{
+                Image(systemName: symbol).font(.largeTitle)
+                Text(name)}
+            .imageScale(.large)
         })
     }
     
     var themeMahjong: some View{
-        themeChoosing(content: ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥"], name: "Mahjong")
+        themeChoosing(content: ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"], name: "Mahjong", symbol: "lanyardcard")
     }
     
     var themeColour: some View{
-        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣"], name: "Colour")
+        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","🟤","🟠","⚪️","⚫️","⚫️"], name: "Colour", symbol: "circle.inset.filled")
     }
     
     var themeFruit: some View{
-        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉"], name: "Fruits")
+        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"], name: "Fruits", symbol: "carrot")
     }
     
     var cards: some View { //this is a normal function
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) { //this is a view builder
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]) { //this is a view builder
             ForEach(0..<emojis.count, id: \.self) { index in
                 CardView(content:emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
@@ -108,7 +117,7 @@ struct ContentView: View {
 struct CardView: View {
     let content: String
     //a struct (var) must have a value
-    @State var isFaceUp = true //have a default value, but value can change
+    @State var isFaceUp = false //have a default value, but value can change
     //@State stores a temporary state of the Var (by creating a pointer)
     
     var body: some View {
