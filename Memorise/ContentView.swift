@@ -39,7 +39,7 @@ struct ContentView: View {
             themeColour
             Spacer()
             themeFruit
-        }
+        }.imageScale(.large)
     }
     
     func themeChoosing(content: [String], name: String, symbol: String) -> some View{
@@ -50,7 +50,7 @@ struct ContentView: View {
             VStack{
                 Image(systemName: symbol).font(.largeTitle)
                 Text(name)}
-            .imageScale(.large)
+
         })
     }
     
@@ -68,7 +68,7 @@ struct ContentView: View {
     
     var cards: some View { //this is a normal function
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]) { //this is a view builder
-            ForEach(0..<emojis.count, id: \.self) { index in
+            ForEach(emojis.indices, id: \.self) { index in
                 CardView(content:emojis[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
@@ -76,26 +76,6 @@ struct ContentView: View {
         .foregroundColor(.orange) //default is to fill the background with orange too
     }
     
-//    var cards: some View { //this is a normal function
-//        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) { //this is a view builder
-//            ForEach(0..<cardCount, id: \.self) { index in
-//                CardView(content:emojis[index])
-//                    .aspectRatio(2/3, contentMode: .fit)
-//            }
-//        }
-//        .foregroundColor(.orange) //default is to fill the background with orange too
-//    }
-    
-//    var cardCountAdjusters: some View {
-//        HStack {
-//            cardRemover
-//            Spacer()
-//            cardAdder
-//        }
-//        .imageScale(.large)
-//        .font(.largeTitle)
-//    }
-//
 //    func cardCountAdjuster(by offset: Int, symbol: String) -> some View{ //by is what the caller uses; offset is the user-defined name, internal vs external parameter names. Symbol is both internal and external
 //        Button(action: {
 //                cardCount += offset
