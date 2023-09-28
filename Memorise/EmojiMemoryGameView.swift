@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  EmojiMemoryGameView.swift
 //  Memorise
 //
 //  Created by Eva Liu on 2023/09/08.
@@ -7,11 +7,15 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct EmojiMemoryGameView: View {
     
+    @ObservedObject var viewModel: EmojiMemoryGame
+    
+    /*
     @State var emojis: Array<String> = []
     
-    @State var theme: String = ""
+    @State var theme = ""
+     */
     
 //@State var cardCount: Int = 4
     
@@ -22,16 +26,20 @@ struct ContentView: View {
                 cards
             }
             Spacer()
-            themeChoosingGroup
+            //themeChoosingGroup
+            Button("Shuffle") {
+                viewModel.shuffle() //another user intent function
+            }
         }
         .padding()
     }
     
     var title: some View {
         Text("Memorise!")
-            .font(.largeTitle).bold().foregroundColor(.orange)
+            .font(.largeTitle).bold().foregroundColor(.orange) //public static vars from Color
     }
     
+    /*
     var themeChoosingGroup: some View{
         HStack{
             themeMahjong
@@ -41,6 +49,7 @@ struct ContentView: View {
             themeFruit
         }.imageScale(.large)
     }
+    
     
     func themeChoosing(content: [String], name: String, symbol: String) -> some View{
         Button(action: {
@@ -65,12 +74,14 @@ struct ContentView: View {
     var themeFruit: some View{
         themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"], name: "Fruits", symbol: "carrot")
     }
+     */
     
     var cards: some View { //this is a normal function
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]) { //this is a view builder
-            ForEach(emojis.indices, id: \.self) { index in
-                CardView(content:emojis[index])
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) { //this is a view builder
+            ForEach(viewModel.cards.indices, id: \.self) { index in
+                CardView(viewModel.cards[index]) //why can't I put this viewModel.cards[] thing in the init directly?
                     .aspectRatio(2/3, contentMode: .fit)
+                    .padding(4)
             }
         }
         .foregroundColor(.orange) //default is to fill the background with orange too
@@ -95,10 +106,21 @@ struct ContentView: View {
 }
 
 struct CardView: View {
+    
+    // let because there is no default and once set it wont be updated inside the CardView.
+    let card: MemoryGame<String>.Card
+    
+    // This is a free init
+    init(_ card: MemoryGame<String>.Card) {
+        self.card = card
+    }
+    
+    /*
     let content: String
     //a struct (var) must have a value
     @State var isFaceUp = false //have a default value, but value can change
     //@State stores a temporary state of the Var (by creating a pointer)
+     */
     
     var body: some View {
         ZStack { //trailing closure syntax - dont need a () because last/only argument is a function.
@@ -106,23 +128,27 @@ struct CardView: View {
             Group {
                 base.foregroundColor(.white) //overwrite the ground Colour on line 19
                 base.strokeBorder(lineWidth: 2)
-                Text(content).font(.largeTitle)
+                Text(card.content)
+                    .font(.system(size: 100))
+                    .minimumScaleFactor(0.01)
+                    .aspectRatio(1, contentMode: .fit)
             }
-            .opacity(isFaceUp ? 1 : 0)
-            base.fill().opacity(isFaceUp ? 0 : 1) //make the emojis transparent when face down so that the cards don't shrink - emojis are still there.
+            .opacity(card.isFaceUp ? 1 : 0)
+            base.fill().opacity(card.isFaceUp ? 0 : 1) //make the emojis transparent when face down so that the cards don't shrink - emojis are still there.
 
         }
+        /*
         .onTapGesture {
             print("tapped") //a good debug feature to create something
             isFaceUp.toggle() //ifFaceUp is a Struct so it can have functions on it
-        }
+        }*/
     }
 }
 
 
 // Produces a content view, has nothing to do with function building.
-struct ContentView_Previews: PreviewProvider {
+struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame()) //initialise var viewModel
     }
 }
