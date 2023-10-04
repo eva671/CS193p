@@ -145,6 +145,7 @@ struct CardView: View {
     }
 }
 
+//test git works
 
 // Produces a content view, has nothing to do with function building.
 struct EmojiMemoryGameView_Previews: PreviewProvider {
