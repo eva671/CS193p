@@ -24,6 +24,7 @@ struct EmojiMemoryGameView: View {
             title
             ScrollView {
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             Spacer()
             //themeChoosingGroup
@@ -78,10 +79,13 @@ struct EmojiMemoryGameView: View {
     
     var cards: some View { //this is a normal function
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 85), spacing: 0)], spacing: 0) { //this is a view builder
-            ForEach(viewModel.cards.indices, id: \.self) { index in
-                CardView(viewModel.cards[index]) //why can't I put this viewModel.cards[] thing in the init directly?
+            ForEach(viewModel.cards) { card in
+                CardView(card) //why can't I put this viewModel.cards[] thing in the init directly?
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture{
+                        viewModel.choose(card)
+                    }
             }
         }
         .foregroundColor(.orange) //default is to fill the background with orange too
@@ -137,6 +141,7 @@ struct CardView: View {
             base.fill().opacity(card.isFaceUp ? 0 : 1) //make the emojis transparent when face down so that the cards don't shrink - emojis are still there.
 
         }
+        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0) //cards that are face down and matched will have no opacity - they won't be seen
         /*
         .onTapGesture {
             print("tapped") //a good debug feature to create something
@@ -145,7 +150,6 @@ struct CardView: View {
     }
 }
 
-//test git works
 
 // Produces a content view, has nothing to do with function building.
 struct EmojiMemoryGameView_Previews: PreviewProvider {
