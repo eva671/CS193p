@@ -63,7 +63,11 @@ struct MemoryGame<CardContent> where CardContent: Equatable { //<CardContent> is
     
     //Any function that can modify the model has to be marked mutating
     //This will cause a copy-on-write cuz something is changed
-    mutating func shuffle() {
+    mutating func newGame() {
+        cards.indices.forEach { 
+            cards[$0].isFaceUp = false
+            cards[$0].isMatched = false
+        }
         cards.shuffle()
         print(cards)
     }

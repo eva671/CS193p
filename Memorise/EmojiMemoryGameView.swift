@@ -21,23 +21,19 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack{
-            title
+            HStack{
+                Spacer()
+                Button("NewGame") {
+                    viewModel.newGame() //another user intent function
+                }
+            }.padding([.trailing, .bottom])
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
-            Spacer()
             //themeChoosingGroup
-            Button("Shuffle") {
-                viewModel.shuffle() //another user intent function
-            }
         }
         .padding()
-    }
-    
-    var title: some View {
-        Text("Memorise!")
-            .font(.largeTitle).bold().foregroundColor(.orange) //public static vars from Color
     }
     
     /*

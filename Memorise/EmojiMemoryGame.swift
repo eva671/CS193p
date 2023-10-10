@@ -41,12 +41,13 @@ class EmojiMemoryGame: ObservableObject {
     
     //MARK: - Intents
     
-    func shuffle() {
-        model.shuffle()
-    }
-    
     //_ makes the parameter name an internal name, so the caller won't see it.
     func choose(_ card: MemoryGame<String>.Card) {
         model.choose(card)
     }
+    
+    func newGame() {
+        model.newGame()
+    }
+    
 }
