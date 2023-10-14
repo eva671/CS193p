@@ -27,18 +27,16 @@ struct ContentView: View {
         .padding()
     }
     
-    var title: some View {
-        Text("Memorise!")
+    let title = Text("Memorise!")
             .font(.largeTitle).bold().foregroundColor(.orange)
-    }
     
     var themeChoosingGroup: some View{
         HStack{
-            themeMahjong
+            themeChoosing(content: Mahjong, name: "Mahjong", symbol: "lanyardcard")
             Spacer()
-            themeColour
+            themeChoosing(content: Colour, name: "Colour", symbol: "circle.inset.filled")
             Spacer()
-            themeFruit
+            themeChoosing(content: Fruit, name: "Fruits", symbol: "carrot")
         }
     }
     
@@ -54,17 +52,11 @@ struct ContentView: View {
         })
     }
     
-    var themeMahjong: some View{
-        themeChoosing(content: ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"], name: "Mahjong", symbol: "lanyardcard")
-    }
+    let Mahjong = ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"]
     
-    var themeColour: some View{
-        themeChoosing(content: ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","🟤","🟠","⚪️","⚫️","⚫️"], name: "Colour", symbol: "circle.inset.filled")
-    }
+    let Colour = ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","🟤","🟠","⚪️","⚫️","⚫️"]
     
-    var themeFruit: some View{
-        themeChoosing(content: ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"], name: "Fruits", symbol: "carrot")
-    }
+    let Fruit = ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"]
     
     var cards: some View { //this is a normal function
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 70))]) { //this is a view builder
