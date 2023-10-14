@@ -16,7 +16,12 @@ import SwiftUI //ViewModel needs to know about the UI
 class EmojiMemoryGame: ObservableObject {
     
     //static: make emojis global but namespace it inside the class
-    private static let emojis = ["🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","⚫️"]
+    private static let 
+    Circles = ["🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","⚫️"],
+    Fruits = ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"],
+    Mahjong = ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"]
+    
+    private static let emojis = Circles //TODO: choose theme
     
     private static func createMemoryGame() -> MemoryGame<String> {
         return MemoryGame(numberOfPairsOfCards: 10) { pairIndex in
