@@ -10,23 +10,31 @@ import SwiftUI //ViewModel needs to know about the UI
 //Can have a global function, and when initialising model you will write:
 //model = MemoryGame(numberOfPairsOfCards: 4, cardContentFactory: createCardContent)
 /*func createCardContent(forPairAtIndex index: Int) -> String {
-    ["🔴","🟡","🟢","🔵","🟣","🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","🟤","🟠","⚪️","⚫️","⚫️"][index]
+ return ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"][index]
 }*/
 
 class EmojiMemoryGame: ObservableObject {
     
-    //static: make emojis global but namespace it inside the class
-    private static let 
-    Circles = ["🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","⚫️"],
-    Fruits = ["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"],
-    Mahjong = ["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"]
+    struct Theme {
+        let name: String
+        let numberOfPairs: Int
+        let colour: Color
+        let emoji: [String]
+    }
     
-    private static let emojis = Circles //TODO: choose theme
+    //static: make emojis global but namespace it inside the class
+    private static let Colour = Theme(name: "Colour", numberOfPairs: 9, colour: .yellow, emoji: ["🔴","🟡","🟢","🔵","🟣","🟤","🟠","⚪️","⚫️"]),
+                
+                Fruits = Theme(name: "Fruits", numberOfPairs: 11, colour: .green, emoji:["🍎","🍐","🍊","🍋","🍌","🍉","🍎","🍐","🍊","🍋","🍌","🍉","🫐","🍓","🫐","🍓","🍇","🍒","🍍","🍇","🍒","🍍"]),
+                
+                Mahjong = Theme(name: "Mahjong", numberOfPairs: 10, colour: .orange, emoji:["🀢","🀣","🀤","🀥","🀢","🀣","🀤","🀥","🀄️","🀆","🀦","🀧","🀨","🀩","🀄️","🀆","🀦","🀧","🀨","🀩"])
+    
+    private static let themeChosen = [Colour, Fruits, Mahjong][themeIndex]
     
     private static func createMemoryGame() -> MemoryGame<String> {
-        return MemoryGame(numberOfPairsOfCards: 10) { pairIndex in
-            if emojis.indices.contains(pairIndex) {
-                return emojis[pairIndex] //don't have to put the namespace of emojis at the front
+        return MemoryGame(numberOfPairsOfCards: 10) { pairIndex  in
+            if (themeChosen.emoji.indices.contains(pairIndex))  {
+                return (themeChosen.emoji[pairIndex]) //don't have to put the namespace of emojis at the front
             } else {
                 return "?!"
             }
@@ -42,6 +50,10 @@ class EmojiMemoryGame: ObservableObject {
     //This is needed for the UI to work because model is now private.
     var cards: Array<MemoryGame<String>.Card> {
         return model.cards
+    }
+    
+    var themeIndex: Int {
+        return model.themeIndex
     }
     
     //MARK: - Intents

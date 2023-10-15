@@ -11,6 +11,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable { //<CardContent> is
     private(set) var cards: Array<Card> //private (set) allows other code to see the var but not changing it.
     //always start with private unless you know it has to be public straight away.
     
+    //private(set) var theme: Array<Theme>
+    
+    private(set) var themeIndex: Int
+    
     //cardContentFactory is a function as type. Using this because we don't know what the CardContent is.
     //set up init so that when calling the model in ViewModel in a Class, the code does not complain
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent){
@@ -69,14 +73,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable { //<CardContent> is
             cards[$0].isMatched = false
         }
         cards.shuffle()
-        print(cards)
+        return themeIndex = [0, 1, 2].randomElement() ?? 0
     }
     
     struct Card: Equatable, Identifiable, CustomDebugStringConvertible {
         //nested struct is good for name-spacing. This Card is going to be called MemoryGame.Card.
         var isFaceUp = false //faceup does change during the game
         var isMatched = false
-        let content: CardContent //content doesn't change throughout the game
+        var content: CardContent //content doesn't change throughout the game
         
         var id: String
         
@@ -84,13 +88,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable { //<CardContent> is
             "\(id): \(content) \(isFaceUp ? "up": "down")\(isMatched ? "matched" : "")"
         }
         
-    }
-    
-    struct Theme {
-        let name: String
-        let numberOfPairs: Int
-        let colour: String
-        let emoji: CardContent
     }
     
 }
